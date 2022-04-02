@@ -27,13 +27,11 @@ public class ImagePanel extends JPanel {
     private final int columnsCount;
     private final List<JLabel> imageLabels;
     private final ImageServiceImpl imageService;
-    private final PaginationPanel paginationPanel;
 
-    public ImagePanel(PaginationPanel paginationPanel, Color backgroundColor, int rowsCount, int columnsCount) {
+    public ImagePanel(Color backgroundColor, int rowsCount, int columnsCount) {
 
         this.rowsCount = rowsCount;
         this.columnsCount = columnsCount;
-        this.paginationPanel = paginationPanel;
         imageService = ImageServiceImpl.getInstance();
         final int initialCapacity = rowsCount * columnsCount;
         imageLabels = new ArrayList<>(initialCapacity);
@@ -64,7 +62,9 @@ public class ImagePanel extends JPanel {
         }
         for (int i = 0; i < imageIcons.size(); i++) {
             ImageIcon imageIcon = imageIcons.get(i);
-            imageIcon = imageService.scaleImage(imageIcon, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
+            final String description = imageIcon.getDescription();
+            imageIcon = imageService.scale(imageIcon, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
+            imageIcon.setDescription(description);
             final JLabel imageLabel = imageLabels.get(i);
             imageLabel.setIcon(imageIcon);
         }
@@ -80,12 +80,18 @@ public class ImagePanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
 
             final ImageIcon imageIcon = readImageIcon(e);
+            if (imageIcon == null) {
+                return;
+            }
+            final ImageIcon scaledImage = imageService.scale(imageIcon, 1920, 1080);
             final JLabel imageLabel = new JLabel();
-            imageLabel.setIcon(imageIcon);
-            JFrame frame = createFrame(imageIcon.getIconWidth(), imageIcon.getIconHeight());
-            frame.add(imageLabel);
-            frame.setVisible(true);
-
+            imageLabel.setIcon(scaledImage);
+            final Thread fullSizeImageThread = new Thread(() -> {
+                JFrame frame = createFrame(scaledImage.getIconWidth(), scaledImage.getIconHeight());
+                frame.add(imageLabel);
+                frame.setVisible(true);
+            });
+            fullSizeImageThread.start();
         }
 
         @Override
@@ -110,11 +116,10 @@ public class ImagePanel extends JPanel {
 
         private ImageIcon readImageIcon(MouseEvent e) {
 
-            int pageIndex = imageLabels.indexOf((JLabel) (e.getComponent()));
-            int page = paginationPanel.getPage();
-            final int pageCapacity = rowsCount * columnsCount;
-            int imageId = (page - 1) * pageCapacity + pageIndex;
-            return imageService.readById(imageId);
+            JLabel jLabel = (JLabel) (e.getComponent());
+            ImageIcon imageIcon = (ImageIcon) jLabel.getIcon();
+            final String description = imageIcon.getDescription();
+            return imageService.readByName(description);
         }
 
         private JFrame createFrame(int width, int height) {
