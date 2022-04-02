@@ -18,6 +18,14 @@ public interface ImageService {
     List<ImageIcon> readPaginated(int page, int size);
 
     /**
+     * Reads image by id
+     *
+     * @param id image id
+     * @return image with given id
+     */
+    ImageIcon readById(int id);
+
+    /**
      * Scales image according to limitations
      *
      * @param imageIcon image to scale

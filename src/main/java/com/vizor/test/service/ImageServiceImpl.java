@@ -35,6 +35,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public ImageIcon readById(int id) {
+
+        return imageDao.readById(id);
+    }
+
+    @Override
     public boolean checkNextPage(int page, int size) {
 
         final int imagesAmount = imageDao.getImagesAmount();

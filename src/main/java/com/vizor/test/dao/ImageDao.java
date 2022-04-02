@@ -18,6 +18,14 @@ public interface ImageDao {
     List<ImageIcon> readRange(int from, int to);
 
     /**
+     * Reads image from storage by given id
+     *
+     * @param id image id
+     * @return image with given id
+     */
+    ImageIcon readById(int id);
+
+    /**
      * Returns amount of images at storage
      *
      * @return images amount

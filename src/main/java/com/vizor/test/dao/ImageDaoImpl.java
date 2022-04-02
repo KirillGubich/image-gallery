@@ -49,6 +49,18 @@ public class ImageDaoImpl implements ImageDao {
     }
 
     @Override
+    public ImageIcon readById(int id) {
+
+        final File[] files = sourceDirectory.listFiles();
+        if (files == null || id > files.length) {
+            return null;
+        }
+        final String fileName = files[id].getName();
+        final Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
+        return new ImageIcon(filePath.toString());
+    }
+
+    @Override
     public int getImagesAmount() {
 
         final File[] files = sourceDirectory.listFiles();
