@@ -12,11 +12,12 @@ public interface ImageService {
     /**
      * Reads images according to given page and size
      *
-     * @param page page number
-     * @param size amount of images on page
+     * @param page   page number
+     * @param size   amount of images on page
+     * @param filter optional text filter
      * @return list of {@link ImageIcon}
      */
-    List<ImageIcon> readPaginated(int page, int size);
+    List<ImageIcon> readPaginated(int page, int size, String filter);
 
     /**
      * Reads image by name
@@ -39,11 +40,12 @@ public interface ImageService {
     /**
      * Checks that next page is available
      *
-     * @param page page number
-     * @param size amount of images on page
+     * @param page   page number
+     * @param size   amount of images on page
+     * @param filter optional text filter
      * @return true if next page is available, else - false
      */
-    boolean checkNextPage(int page, int size);
+    boolean checkNextPage(int page, int size, String filter);
 
     /**
      * Saves image

@@ -30,11 +30,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<ImageIcon> readPaginated(int page, int size) {
+    public List<ImageIcon> readPaginated(int page, int size, String filter) {
 
         int firstIndex = (page - 1) * size;
         int lastIndex = firstIndex + size - 1;
-        return imageDao.readRange(firstIndex, lastIndex);
+        return filter.isEmpty() ?
+                imageDao.readRange(firstIndex, lastIndex) :
+                imageDao.readWithFilter(firstIndex, lastIndex, filter);
     }
 
     @Override
@@ -53,9 +55,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public boolean checkNextPage(int page, int size) {
+    public boolean checkNextPage(int page, int size, String filter) {
 
-        final int imagesAmount = imageDao.getImagesAmount();
+        int imagesAmount = filter.isEmpty() ?
+                imageDao.getImagesAmount() :
+                imageDao.getImagesAmountWithFilter(filter);
         return (page - 1) * size < imagesAmount;
     }
 

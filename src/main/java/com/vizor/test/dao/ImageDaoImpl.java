@@ -7,11 +7,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ImageDaoImpl implements ImageDao {
 
@@ -31,6 +33,44 @@ public class ImageDaoImpl implements ImageDao {
             instance = new ImageDaoImpl();
         }
         return instance;
+    }
+
+    @Override
+    public List<ImageIcon> readWithFilter(int from, int to, String filter) {
+
+        final File[] files = sourceDirectory.listFiles();
+        if (files == null) {
+            return Collections.emptyList();
+        }
+        final List<File> filteredFiles = Arrays.stream(files)
+                .filter(file -> file.getName().startsWith(filter))
+                .collect(Collectors.toList());
+
+        List<ImageIcon> imageIcons = new ArrayList<>();
+        if (to >= filteredFiles.size()) {
+            to = filteredFiles.size() - 1;
+        }
+        for (int i = from; i <= to; i++) {
+            final String fileName = filteredFiles.get(i).getName();
+            final Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
+            ImageIcon imageIcon = new ImageIcon(filePath.toString());
+            imageIcon.setDescription(fileName);
+            imageIcons.add(imageIcon);
+        }
+        return imageIcons;
+    }
+
+    @Override
+    public int getImagesAmountWithFilter(String filter) {
+
+        final File[] files = sourceDirectory.listFiles();
+        if (files == null) {
+            return 0;
+        }
+        final List<File> filteredFiles = Arrays.stream(files)
+                .filter(file -> file.getName().startsWith(filter))
+                .collect(Collectors.toList());
+        return filteredFiles.size();
     }
 
     @Override
@@ -83,7 +123,7 @@ public class ImageDaoImpl implements ImageDao {
     public void save(InputStream inputStream, String imageName) throws IOException {
 
         final Path path = Paths.get(SOURCE_DIRECTORY_PATH, imageName);
-        Files.copy(inputStream, path);
+        Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         inputStream.close();
     }
 }

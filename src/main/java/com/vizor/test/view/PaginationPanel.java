@@ -61,6 +61,11 @@ public class PaginationPanel extends JPanel {
         nextPageButton.setEnabled(false);
     }
 
+    public void enableNextPageButton() {
+
+        nextPageButton.setEnabled(true);
+    }
+
     public void disablePreviousPageButton() {
 
         previousPageButton.setEnabled(false);
@@ -69,6 +74,11 @@ public class PaginationPanel extends JPanel {
     public int getPage() {
 
         return page;
+    }
+
+    public void setPage(int page) {
+
+        this.page = page;
     }
 
     private class NextPageListener implements ActionListener {

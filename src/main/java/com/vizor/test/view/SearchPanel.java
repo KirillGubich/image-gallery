@@ -7,6 +7,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SearchPanel extends JPanel {
 
@@ -19,9 +21,11 @@ public class SearchPanel extends JPanel {
 
     private final JButton searchButton;
     private final JTextField searchTextField;
+    private final GalleryFrame galleryFrame;
 
-    public SearchPanel(Color backgroundColor) {
+    public SearchPanel(Color backgroundColor, GalleryFrame galleryFrame) {
 
+        this.galleryFrame = galleryFrame;
         searchButton = new JButton();
         searchTextField = new JTextField();
         setBackground(backgroundColor);
@@ -45,5 +49,21 @@ public class SearchPanel extends JPanel {
         searchButton.setBackground(backgroundColor);
         searchButton.setPreferredSize(new Dimension(SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT));
         searchButton.setBorder(buttonBorder);
+        searchButton.addActionListener(new SearchListener());
+    }
+
+    public String getSearchText() {
+
+        return searchTextField.getText();
+    }
+
+    private class SearchListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            galleryFrame.resetPages();
+            galleryFrame.updateImages();
+        }
     }
 }

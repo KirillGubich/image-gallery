@@ -12,15 +12,22 @@ public class ToolPanel extends JPanel {
     private static final int HGAP = 0;
     private static final int VGAP = 0;
 
+    private final SearchPanel searchPanel;
+
     public ToolPanel(Color backgroundColor, GalleryFrame galleryFrame) {
 
         setLayout(new GridLayout(ROWS_COUNT, COLUMNS_COUNT, HGAP, VGAP));
         setBackground(backgroundColor);
         final UploadPanel uploadPanel = new UploadPanel(backgroundColor, galleryFrame);
-        final SearchPanel searchPanel = new SearchPanel(backgroundColor);
+        searchPanel = new SearchPanel(backgroundColor, galleryFrame);
 
         add(uploadPanel);
         add(searchPanel);
         add(Box.createHorizontalStrut(0));
+    }
+
+    public String getSearchText() {
+
+        return searchPanel.getSearchText();
     }
 }

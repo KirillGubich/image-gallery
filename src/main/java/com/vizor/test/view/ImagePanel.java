@@ -118,6 +118,9 @@ public class ImagePanel extends JPanel {
 
             JLabel jLabel = (JLabel) (e.getComponent());
             ImageIcon imageIcon = (ImageIcon) jLabel.getIcon();
+            if (imageIcon == null) {
+                return null;
+            }
             final String description = imageIcon.getDescription();
             return imageService.readByName(description);
         }

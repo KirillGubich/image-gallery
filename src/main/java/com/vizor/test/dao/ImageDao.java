@@ -20,6 +20,16 @@ public interface ImageDao {
     List<ImageIcon> readRange(int from, int to);
 
     /**
+     * Reads images from storage in given range with filter
+     *
+     * @param from   first index in range
+     * @param to     last index in range
+     * @param filter text filter
+     * @return list of {@link ImageIcon}
+     */
+    List<ImageIcon> readWithFilter(int from, int to, String filter);
+
+    /**
      * Reads image from storage by given name
      *
      * @param name image name
@@ -33,6 +43,14 @@ public interface ImageDao {
      * @return images amount
      */
     int getImagesAmount();
+
+    /**
+     * Returns amount of images at storage with filter
+     *
+     * @param filter text filter
+     * @return images amount
+     */
+    int getImagesAmountWithFilter(String filter);
 
     /**
      * Saves image to storage
