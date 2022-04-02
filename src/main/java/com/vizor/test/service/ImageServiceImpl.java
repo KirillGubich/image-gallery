@@ -4,6 +4,7 @@ import com.vizor.test.dao.ImageDao;
 import com.vizor.test.dao.ImageDaoImpl;
 
 import javax.swing.ImageIcon;
+import java.awt.Image;
 import java.util.List;
 
 public class ImageServiceImpl implements ImageService {
@@ -31,5 +32,27 @@ public class ImageServiceImpl implements ImageService {
         int firstIndex = (page - 1) * size;
         int lastIndex = firstIndex + size - 1;
         return imageDao.readRange(firstIndex, lastIndex);
+    }
+
+    @Override
+    public ImageIcon scaleImage(ImageIcon imageIcon, int maxWidth, int maxHeight) {
+
+        int iconWidth = imageIcon.getIconWidth();
+        int iconHeight = imageIcon.getIconHeight();
+        int newWidth = iconWidth;
+        int newHeight = iconHeight;
+        if (iconWidth > maxWidth) {
+            newWidth = maxWidth;
+            double widthScale = maxWidth / (double) iconWidth;
+            newHeight = (int) (widthScale * iconHeight);
+        }
+        if (newHeight > maxHeight) {
+            newHeight = maxHeight;
+            double heightScale = maxHeight / (double) iconHeight;
+            newWidth = (int) (heightScale * iconWidth);
+        }
+        Image image = imageIcon.getImage();
+        Image scaledImage = image.getScaledInstance(newWidth, newHeight, java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
     }
 }
