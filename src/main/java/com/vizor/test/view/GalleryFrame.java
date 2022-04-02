@@ -27,7 +27,7 @@ public class GalleryFrame extends JFrame {
         setLayout(new BorderLayout());
         JPanel utilPanel = new ToolPanel(backgroundColor);
         paginationPanel = new PaginationPanel(this, backgroundColor);
-        imagePanel = new ImagePanel(backgroundColor, ROWS, COLUMNS);
+        imagePanel = new ImagePanel(paginationPanel, backgroundColor, ROWS, COLUMNS);
         add(utilPanel, "North");
         add(paginationPanel, "South");
         add(imagePanel);
