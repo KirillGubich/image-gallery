@@ -35,6 +35,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public boolean checkNextPage(int page, int size) {
+
+        final int imagesAmount = imageDao.getImagesAmount();
+        return (page - 1) * size < imagesAmount;
+    }
+
+    @Override
     public ImageIcon scaleImage(ImageIcon imageIcon, int maxWidth, int maxHeight) {
 
         int iconWidth = imageIcon.getIconWidth();

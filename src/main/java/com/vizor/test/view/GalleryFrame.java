@@ -1,33 +1,50 @@
 package com.vizor.test.view;
 
+import com.vizor.test.service.ImageService;
+import com.vizor.test.service.ImageServiceImpl;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.List;
 
 public class GalleryFrame extends JFrame {
 
     private static final Color backgroundColor = new Color(204, 243, 255);
     private static final int ROWS = 4;
     private static final int COLUMNS = 5;
-    private static GalleryFrame instance;
 
-    public static GalleryFrame getInstance() {
+    private final ImagePanel imagePanel;
+    private final PaginationPanel paginationPanel;
+    private final ImageService imageService;
 
-        if (instance == null) {
-            instance = new GalleryFrame();
-        }
-        return instance;
-    }
+    public GalleryFrame(String title) {
 
-    private GalleryFrame() {
-
+        super(title);
+        imageService = ImageServiceImpl.getInstance();
         setLayout(new BorderLayout());
         JPanel utilPanel = new ToolPanel(backgroundColor);
-        JPanel paginationPanel = new PaginationPanel(backgroundColor);
-        ImagePanel imagePanel = new ImagePanel(backgroundColor, ROWS, COLUMNS);
+        paginationPanel = new PaginationPanel(this, backgroundColor);
+        imagePanel = new ImagePanel(backgroundColor, ROWS, COLUMNS);
         add(utilPanel, "North");
         add(paginationPanel, "South");
         add(imagePanel);
+    }
+
+    public void updateImages() {
+
+        int amount = ROWS * COLUMNS;
+        int page = paginationPanel.getPage();
+        final List<ImageIcon> images = imageService.readPaginated(page, amount);
+        imagePanel.uploadImages(images);
+        if (page == 1) {
+            paginationPanel.disablePreviousPageButton();
+        }
+        final boolean nextPageAvailable = imageService.checkNextPage(++page, amount);
+        if (!nextPageAvailable) {
+            paginationPanel.disableNextPageButton();
+        }
     }
 }

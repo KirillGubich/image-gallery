@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PaginationPanel extends JPanel {
 
@@ -17,9 +19,12 @@ public class PaginationPanel extends JPanel {
 
     private final JButton previousPageButton;
     private final JButton nextPageButton;
+    private final GalleryFrame galleryFrame;
+    private int page = 1;
 
-    public PaginationPanel(Color backgroundColor) {
+    public PaginationPanel(GalleryFrame galleryFrame, Color backgroundColor) {
 
+        this.galleryFrame = galleryFrame;
         previousPageButton = new JButton();
         nextPageButton = new JButton();
         LineBorder buttonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
@@ -38,6 +43,7 @@ public class PaginationPanel extends JPanel {
         nextPageButton.setIcon(icon);
         nextPageButton.setBackground(backgroundColor);
         nextPageButton.setBorder(buttonBorder);
+        nextPageButton.addActionListener(new NextPageListener());
     }
 
     private void initPreviousPageButton(Color backgroundColor, LineBorder buttonBorder) {
@@ -46,7 +52,44 @@ public class PaginationPanel extends JPanel {
         previousPageButton.setIcon(icon);
         previousPageButton.setBackground(backgroundColor);
         previousPageButton.setBorder(buttonBorder);
+        previousPageButton.setEnabled(false);
+        previousPageButton.addActionListener(new PreviousPageListener());
     }
 
+    public void disableNextPageButton() {
 
+        nextPageButton.setEnabled(false);
+    }
+
+    public void disablePreviousPageButton() {
+
+        previousPageButton.setEnabled(false);
+    }
+
+    public int getPage() {
+
+        return page;
+    }
+
+    private class NextPageListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            previousPageButton.setEnabled(true);
+            page++;
+            galleryFrame.updateImages();
+        }
+    }
+
+    private class PreviousPageListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            nextPageButton.setEnabled(true);
+            page--;
+            galleryFrame.updateImages();
+        }
+    }
 }

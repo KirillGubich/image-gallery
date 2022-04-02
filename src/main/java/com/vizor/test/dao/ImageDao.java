@@ -16,4 +16,11 @@ public interface ImageDao {
      * @return list of {@link ImageIcon}
      */
     List<ImageIcon> readRange(int from, int to);
+
+    /**
+     * Returns amount of images at storage
+     *
+     * @return images amount
+     */
+    int getImagesAmount();
 }

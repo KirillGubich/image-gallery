@@ -26,4 +26,13 @@ public interface ImageService {
      * @return scaled image
      */
     ImageIcon scaleImage(ImageIcon imageIcon, int maxWidth, int maxHeight);
+
+    /**
+     * Checks that next page is available
+     *
+     * @param page page number
+     * @param size amount of images on page
+     * @return true if next page is available, else - false
+     */
+    boolean checkNextPage(int page, int size);
 }

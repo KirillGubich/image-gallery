@@ -47,4 +47,11 @@ public class ImageDaoImpl implements ImageDao {
         }
         return imageIcons;
     }
+
+    @Override
+    public int getImagesAmount() {
+
+        final File[] files = sourceDirectory.listFiles();
+        return files != null ? files.length : 0;
+    }
 }
