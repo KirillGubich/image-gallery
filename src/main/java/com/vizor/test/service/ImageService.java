@@ -1,6 +1,7 @@
 package com.vizor.test.service;
 
 import javax.swing.ImageIcon;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,12 +19,12 @@ public interface ImageService {
     List<ImageIcon> readPaginated(int page, int size);
 
     /**
-     * Reads image by id
+     * Reads image by name
      *
-     * @param id image id
-     * @return image with given id
+     * @param name image name
+     * @return image with given name
      */
-    ImageIcon readById(int id);
+    ImageIcon readByName(String name);
 
     /**
      * Scales image according to limitations
@@ -33,7 +34,7 @@ public interface ImageService {
      * @param maxHeight maximal height
      * @return scaled image
      */
-    ImageIcon scaleImage(ImageIcon imageIcon, int maxWidth, int maxHeight);
+    ImageIcon scale(ImageIcon imageIcon, int maxWidth, int maxHeight);
 
     /**
      * Checks that next page is available
@@ -43,4 +44,12 @@ public interface ImageService {
      * @return true if next page is available, else - false
      */
     boolean checkNextPage(int page, int size);
+
+    /**
+     * Saves image
+     *
+     * @param imagePath image file path
+     * @throws IOException if file not exist
+     */
+    void save(String imagePath) throws IOException;
 }

@@ -5,6 +5,9 @@ import com.vizor.test.dao.ImageDaoImpl;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class ImageServiceImpl implements ImageService {
@@ -35,9 +38,18 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageIcon readById(int id) {
+    public ImageIcon readByName(String name) {
 
-        return imageDao.readById(id);
+        return imageDao.readByName(name);
+    }
+
+    @Override
+    public void save(String imagePath) throws IOException {
+
+        final File file = new File(imagePath);
+        final FileInputStream inputStream = new FileInputStream(file);
+        final String fileName = file.getName();
+        imageDao.save(inputStream, fileName);
     }
 
     @Override
@@ -48,7 +60,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageIcon scaleImage(ImageIcon imageIcon, int maxWidth, int maxHeight) {
+    public ImageIcon scale(ImageIcon imageIcon, int maxWidth, int maxHeight) {
 
         int iconWidth = imageIcon.getIconWidth();
         int iconHeight = imageIcon.getIconHeight();

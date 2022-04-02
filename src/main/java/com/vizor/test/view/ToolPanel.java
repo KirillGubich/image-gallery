@@ -12,11 +12,11 @@ public class ToolPanel extends JPanel {
     private static final int HGAP = 0;
     private static final int VGAP = 0;
 
-    public ToolPanel(Color backgroundColor) {
+    public ToolPanel(Color backgroundColor, GalleryFrame galleryFrame) {
 
         setLayout(new GridLayout(ROWS_COUNT, COLUMNS_COUNT, HGAP, VGAP));
         setBackground(backgroundColor);
-        final UploadPanel uploadPanel = new UploadPanel(backgroundColor);
+        final UploadPanel uploadPanel = new UploadPanel(backgroundColor, galleryFrame);
         final SearchPanel searchPanel = new SearchPanel(backgroundColor);
 
         add(uploadPanel);

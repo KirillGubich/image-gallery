@@ -25,7 +25,7 @@ public class GalleryFrame extends JFrame {
         super(title);
         imageService = ImageServiceImpl.getInstance();
         setLayout(new BorderLayout());
-        JPanel utilPanel = new ToolPanel(backgroundColor);
+        JPanel utilPanel = new ToolPanel(backgroundColor, this);
         paginationPanel = new PaginationPanel(this, backgroundColor);
         imagePanel = new ImagePanel(paginationPanel, backgroundColor, ROWS, COLUMNS);
         add(utilPanel, "North");
@@ -42,7 +42,7 @@ public class GalleryFrame extends JFrame {
         if (page == 1) {
             paginationPanel.disablePreviousPageButton();
         }
-        final boolean nextPageAvailable = imageService.checkNextPage(++page, amount);
+        final boolean nextPageAvailable = imageService.checkNextPage(page + 1, amount);
         if (!nextPageAvailable) {
             paginationPanel.disableNextPageButton();
         }
