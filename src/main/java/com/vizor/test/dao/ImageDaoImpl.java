@@ -2,11 +2,16 @@ package com.vizor.test.dao;
 
 import javax.swing.ImageIcon;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ImageDaoImpl implements ImageDao {
 
@@ -43,20 +48,27 @@ public class ImageDaoImpl implements ImageDao {
             final String fileName = files[i].getName();
             final Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
             ImageIcon imageIcon = new ImageIcon(filePath.toString());
+            imageIcon.setDescription(fileName);
             imageIcons.add(imageIcon);
         }
         return imageIcons;
     }
 
     @Override
-    public ImageIcon readById(int id) {
+    public ImageIcon readByName(String name) {
 
         final File[] files = sourceDirectory.listFiles();
-        if (files == null || id > files.length) {
+        if (files == null) {
             return null;
         }
-        final String fileName = files[id].getName();
-        final Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
+        Optional<File> optionalFile = Arrays.stream(files)
+                .filter(file -> file.getName().equals(name))
+                .findFirst();
+        if (!optionalFile.isPresent()) {
+            return null;
+        }
+        String fileName = optionalFile.get().getName();
+        Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
         return new ImageIcon(filePath.toString());
     }
 
@@ -65,5 +77,13 @@ public class ImageDaoImpl implements ImageDao {
 
         final File[] files = sourceDirectory.listFiles();
         return files != null ? files.length : 0;
+    }
+
+    @Override
+    public void save(InputStream inputStream, String imageName) throws IOException {
+
+        final Path path = Paths.get(SOURCE_DIRECTORY_PATH, imageName);
+        Files.copy(inputStream, path);
+        inputStream.close();
     }
 }
