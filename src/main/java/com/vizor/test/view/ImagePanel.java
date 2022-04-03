@@ -22,7 +22,7 @@ public class ImagePanel extends JPanel {
     private static final int IMAGE_BORDER_THICKNESS = 10;
     private static final int MAX_IMAGE_WIDTH = 150;
     private static final int MAX_IMAGE_HEIGHT = 110;
-    private static final int IMAGE_HEIGHT_BUFFER = 30;
+    private static final int IMAGE_HEIGHT_BUFFER = 35;
 
     private final int rowsCount;
     private final int columnsCount;
