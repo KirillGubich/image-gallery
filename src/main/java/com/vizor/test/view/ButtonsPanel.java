@@ -96,8 +96,8 @@ public class ButtonsPanel extends JPanel {
                     for (File file : files) {
                         String filePath = file.getAbsolutePath();
                         imageService.save(filePath);
-                        galleryFrame.updateImages();
                     }
+                    galleryFrame.updateImages();
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(new JFrame(), "Image upload error. Try again", "Error",
                             JOptionPane.ERROR_MESSAGE);

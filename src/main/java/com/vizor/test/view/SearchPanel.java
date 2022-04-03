@@ -63,7 +63,8 @@ public class SearchPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             galleryFrame.resetPages();
-            galleryFrame.updateImages();
+            Thread updateThread = new Thread(galleryFrame::updateImages);
+            updateThread.start();
         }
     }
 }

@@ -82,7 +82,8 @@ public class PaginationPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             page++;
-            galleryFrame.updateImages();
+            Thread updateThread = new Thread(galleryFrame::updateImages);
+            updateThread.start();
         }
     }
 
@@ -92,7 +93,8 @@ public class PaginationPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             page--;
-            galleryFrame.updateImages();
+            Thread updateThread = new Thread(galleryFrame::updateImages);
+            updateThread.start();
         }
     }
 }
