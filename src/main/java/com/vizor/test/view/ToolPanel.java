@@ -18,10 +18,10 @@ public class ToolPanel extends JPanel {
 
         setLayout(new GridLayout(ROWS_COUNT, COLUMNS_COUNT, HGAP, VGAP));
         setBackground(backgroundColor);
-        final UploadPanel uploadPanel = new UploadPanel(backgroundColor, galleryFrame);
+        ButtonsPanel buttonsPanel = new ButtonsPanel(backgroundColor, galleryFrame);
         searchPanel = new SearchPanel(backgroundColor, galleryFrame);
 
-        add(uploadPanel);
+        add(buttonsPanel);
         add(searchPanel);
         add(Box.createHorizontalStrut(0));
     }

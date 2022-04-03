@@ -28,11 +28,13 @@ public class ImagePanel extends JPanel {
     private final int columnsCount;
     private final List<JLabel> imageLabels;
     private final ImageServiceImpl imageService;
+    private final GalleryFrame galleryFrame;
 
-    public ImagePanel(Color backgroundColor, int rowsCount, int columnsCount) {
+    public ImagePanel(Color backgroundColor, int rowsCount, int columnsCount, GalleryFrame galleryFrame) {
 
         this.rowsCount = rowsCount;
         this.columnsCount = columnsCount;
+        this.galleryFrame = galleryFrame;
         imageService = ImageServiceImpl.getInstance();
         final int initialCapacity = rowsCount * columnsCount;
         imageLabels = new ArrayList<>(initialCapacity);
@@ -84,19 +86,8 @@ public class ImagePanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
 
-            final ImageIcon imageIcon = readImageIcon(e);
-            if (imageIcon == null) {
-                return;
-            }
-            final ImageIcon scaledImage = imageService.scale(imageIcon, 1920, 1080);
-            final JLabel imageLabel = new JLabel();
-            imageLabel.setIcon(scaledImage);
-            final Thread fullSizeImageThread = new Thread(() -> {
-                JFrame frame = createFrame(scaledImage.getIconWidth(), scaledImage.getIconHeight());
-                frame.add(imageLabel);
-                frame.setVisible(true);
-            });
-            fullSizeImageThread.start();
+            Thread clickProcessThread = new Thread(() -> processClick(e));
+            clickProcessThread.start();
         }
 
         @Override
@@ -119,6 +110,35 @@ public class ImagePanel extends JPanel {
 
         }
 
+        private void processClick(MouseEvent e) {
+
+            if (galleryFrame.isDeleteModeEnabled()) {
+                deleteImage(e);
+                galleryFrame.updateImages();
+
+            } else {
+                ImageIcon imageIcon = readImageIcon(e);
+                showFullSizeImage(imageIcon);
+            }
+        }
+
+        private void showFullSizeImage(ImageIcon imageIcon) {
+
+            if (imageIcon == null) {
+                return;
+            }
+            final ImageIcon scaledImage = imageService.scale(imageIcon, 1920, 1080);
+            final JLabel imageLabel = new JLabel();
+            imageLabel.setIcon(scaledImage);
+            final Thread fullSizeImageThread = new Thread(() -> {
+                JFrame frame = createFrame(scaledImage.getIconWidth(), scaledImage.getIconHeight());
+                frame.add(imageLabel);
+                frame.setVisible(true);
+            });
+            fullSizeImageThread.start();
+        }
+
+
         private ImageIcon readImageIcon(MouseEvent e) {
 
             JLabel jLabel = (JLabel) (e.getComponent());
@@ -138,6 +158,17 @@ public class ImagePanel extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setResizable(false);
             return frame;
+        }
+
+        private void deleteImage(MouseEvent e) {
+
+            JLabel jLabel = (JLabel) (e.getComponent());
+            ImageIcon imageIcon = (ImageIcon) jLabel.getIcon();
+            if (imageIcon == null) {
+                return;
+            }
+            String description = imageIcon.getDescription();
+            imageService.deleteByName(description);
         }
     }
 }

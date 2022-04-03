@@ -20,10 +20,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class UploadPanel extends JPanel {
+public class ButtonsPanel extends JPanel {
 
-    private static final int UPLOAD_BUTTON_WIDTH = 40;
-    private static final int UPLOAD_BUTTON_HEIGHT = 40;
+    private static final int BUTTON_WIDTH = 40;
+    private static final int BUTTON_HEIGHT = 40;
     private static final int BUTTON_BORDER_THICKNESS = 4;
     private static final String UPLOAD_ICON_PATH = "src/main/resources/icons/uploadIcon.png";
     private static final String DELETE_ICON_PATH = "src/main/resources/icons/bin.png";
@@ -31,10 +31,12 @@ public class UploadPanel extends JPanel {
     private final JButton uploadButton;
     private final JButton deleteButton;
     private final GalleryFrame galleryFrame;
+    private final LineBorder defaultButtonBorder;
 
-    public UploadPanel(Color backgroundColor, GalleryFrame galleryFrame) {
+    public ButtonsPanel(Color backgroundColor, GalleryFrame galleryFrame) {
 
         this.galleryFrame = galleryFrame;
+        defaultButtonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(backgroundColor);
         uploadButton = new JButton();
@@ -48,23 +50,21 @@ public class UploadPanel extends JPanel {
     private void configUploadButton(Color backgroundColor) {
 
         ImageIcon icon = new ImageIcon(UPLOAD_ICON_PATH);
-        LineBorder buttonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
         uploadButton.setIcon(icon);
         uploadButton.setBackground(backgroundColor);
-        uploadButton.setPreferredSize(new Dimension(UPLOAD_BUTTON_WIDTH, UPLOAD_BUTTON_HEIGHT));
-        uploadButton.setBorder(buttonBorder);
+        uploadButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        uploadButton.setBorder(defaultButtonBorder);
         uploadButton.addActionListener(new UploadListener());
     }
 
     private void configDeleteButton(Color backgroundColor) {
 
         ImageIcon icon = new ImageIcon(DELETE_ICON_PATH);
-        LineBorder buttonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
         deleteButton.setIcon(icon);
         deleteButton.setBackground(backgroundColor);
-        deleteButton.setPreferredSize(new Dimension(UPLOAD_BUTTON_WIDTH, UPLOAD_BUTTON_HEIGHT));
-        deleteButton.setBorder(buttonBorder);
-//        uploadButton.addActionListener(new UploadListener());
+        deleteButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        deleteButton.setBorder(defaultButtonBorder);
+        deleteButton.addActionListener(new DeleteListener());
     }
 
     private class UploadListener implements ActionListener {
@@ -104,6 +104,22 @@ public class UploadPanel extends JPanel {
                 }
             });
             uploadThread.start();
+        }
+    }
+
+    private class DeleteListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            boolean deleteModeEnabled = galleryFrame.isDeleteModeEnabled();
+            if (deleteModeEnabled) {
+                deleteButton.setBorder(defaultButtonBorder);
+            } else {
+                LineBorder deleteModeBorder = new LineBorder(Color.red, BUTTON_BORDER_THICKNESS);
+                deleteButton.setBorder(deleteModeBorder);
+            }
+            galleryFrame.setDeleteModeEnabled(!deleteModeEnabled);
         }
     }
 }
