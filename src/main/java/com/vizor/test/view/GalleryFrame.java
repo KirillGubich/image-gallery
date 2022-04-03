@@ -41,15 +41,9 @@ public class GalleryFrame extends JFrame {
         List<ImageIcon> images;
         images = imageService.readPaginated(page, amount, searchText);
         imagePanel.uploadImages(images);
-        if (page == 1) {
-            paginationPanel.disablePreviousPageButton();
-        }
+        paginationPanel.setPreviousPageButtonEnabled(page != 1);
         boolean nextPageAvailable = imageService.checkNextPage(page + 1, amount, searchText);
-        if (nextPageAvailable) {
-            paginationPanel.enableNextPageButton();
-        } else {
-            paginationPanel.disableNextPageButton();
-        }
+        paginationPanel.setNextPageButtonEnabled(nextPageAvailable);
     }
 
     public void resetPages() {

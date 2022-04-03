@@ -56,19 +56,14 @@ public class PaginationPanel extends JPanel {
         previousPageButton.addActionListener(new PreviousPageListener());
     }
 
-    public void disableNextPageButton() {
+    public void setNextPageButtonEnabled(boolean enabled) {
 
-        nextPageButton.setEnabled(false);
+        nextPageButton.setEnabled(enabled);
     }
 
-    public void enableNextPageButton() {
+    public void setPreviousPageButtonEnabled(boolean enabled) {
 
-        nextPageButton.setEnabled(true);
-    }
-
-    public void disablePreviousPageButton() {
-
-        previousPageButton.setEnabled(false);
+        previousPageButton.setEnabled(enabled);
     }
 
     public int getPage() {
@@ -86,7 +81,6 @@ public class PaginationPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            previousPageButton.setEnabled(true);
             page++;
             galleryFrame.updateImages();
         }
@@ -97,7 +91,6 @@ public class PaginationPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            nextPageButton.setEnabled(true);
             page--;
             galleryFrame.updateImages();
         }
