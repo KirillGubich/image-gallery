@@ -92,6 +92,9 @@ public class PaginationPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            if (page == 1) {
+                return;
+            }
             page--;
             Thread updateThread = new Thread(galleryFrame::updateImages);
             updateThread.start();
