@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ImageDaoImpl implements ImageDao {
@@ -97,18 +96,7 @@ public class ImageDaoImpl implements ImageDao {
     @Override
     public ImageIcon readByName(String name) {
 
-        final File[] files = sourceDirectory.listFiles();
-        if (files == null) {
-            return null;
-        }
-        Optional<File> optionalFile = Arrays.stream(files)
-                .filter(file -> file.getName().equals(name))
-                .findFirst();
-        if (!optionalFile.isPresent()) {
-            return null;
-        }
-        String fileName = optionalFile.get().getName();
-        Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, fileName);
+        Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, name);
         return new ImageIcon(filePath.toString());
     }
 
@@ -129,5 +117,15 @@ public class ImageDaoImpl implements ImageDao {
         Path path = Paths.get(SOURCE_DIRECTORY_PATH, imageName);
         Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         inputStream.close();
+    }
+
+    @Override
+    public void delete(String name) {
+
+        Path filePath = Paths.get(SOURCE_DIRECTORY_PATH, name);
+        try {
+            Files.delete(filePath);
+        } catch (IOException ignored) {
+        }
     }
 }

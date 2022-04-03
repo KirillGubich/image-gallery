@@ -26,8 +26,10 @@ public class UploadPanel extends JPanel {
     private static final int UPLOAD_BUTTON_HEIGHT = 40;
     private static final int BUTTON_BORDER_THICKNESS = 4;
     private static final String UPLOAD_ICON_PATH = "src/main/resources/icons/uploadIcon.png";
+    private static final String DELETE_ICON_PATH = "src/main/resources/icons/bin.png";
 
     private final JButton uploadButton;
+    private final JButton deleteButton;
     private final GalleryFrame galleryFrame;
 
     public UploadPanel(Color backgroundColor, GalleryFrame galleryFrame) {
@@ -36,19 +38,33 @@ public class UploadPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(backgroundColor);
         uploadButton = new JButton();
+        deleteButton = new JButton();
         configUploadButton(backgroundColor);
+        configDeleteButton(backgroundColor);
         add(uploadButton);
+        add(deleteButton);
     }
 
     private void configUploadButton(Color backgroundColor) {
 
-        ImageIcon uploadIcon = new ImageIcon(UPLOAD_ICON_PATH);
+        ImageIcon icon = new ImageIcon(UPLOAD_ICON_PATH);
         LineBorder buttonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
-        uploadButton.setIcon(uploadIcon);
+        uploadButton.setIcon(icon);
         uploadButton.setBackground(backgroundColor);
         uploadButton.setPreferredSize(new Dimension(UPLOAD_BUTTON_WIDTH, UPLOAD_BUTTON_HEIGHT));
         uploadButton.setBorder(buttonBorder);
         uploadButton.addActionListener(new UploadListener());
+    }
+
+    private void configDeleteButton(Color backgroundColor) {
+
+        ImageIcon icon = new ImageIcon(DELETE_ICON_PATH);
+        LineBorder buttonBorder = new LineBorder(backgroundColor, BUTTON_BORDER_THICKNESS);
+        deleteButton.setIcon(icon);
+        deleteButton.setBackground(backgroundColor);
+        deleteButton.setPreferredSize(new Dimension(UPLOAD_BUTTON_WIDTH, UPLOAD_BUTTON_HEIGHT));
+        deleteButton.setBorder(buttonBorder);
+//        uploadButton.addActionListener(new UploadListener());
     }
 
     private class UploadListener implements ActionListener {

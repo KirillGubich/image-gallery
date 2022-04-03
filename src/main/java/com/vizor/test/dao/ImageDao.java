@@ -60,4 +60,11 @@ public interface ImageDao {
      * @throws IOException if saving will be corrupted
      */
     void save(InputStream inputStream, String imageName) throws IOException;
+
+    /**
+     * Deletes image from storage
+     *
+     * @param name image name
+     */
+    void delete(String name);
 }
