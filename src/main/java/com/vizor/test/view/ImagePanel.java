@@ -1,5 +1,6 @@
 package com.vizor.test.view;
 
+import com.vizor.test.service.ImageService;
 import com.vizor.test.service.ImageServiceImpl;
 
 import javax.swing.ImageIcon;
@@ -27,7 +28,7 @@ public class ImagePanel extends JPanel {
     private final int rowsCount;
     private final int columnsCount;
     private final List<JLabel> imageLabels;
-    private final ImageServiceImpl imageService;
+    private final ImageService imageService;
     private final GalleryFrame galleryFrame;
 
     public ImagePanel(Color backgroundColor, int rowsCount, int columnsCount, GalleryFrame galleryFrame) {
