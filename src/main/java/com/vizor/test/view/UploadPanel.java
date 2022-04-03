@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -58,21 +59,29 @@ public class UploadPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
 
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            jfc.setMultiSelectionEnabled(true);
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfc.setDialogTitle("Select images");
+            jfc.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("images", "png", "jpg");
+            jfc.addChoosableFileFilter(filter);
             int returnValue = jfc.showOpenDialog(null);
             if (returnValue != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            File selectedFile = jfc.getSelectedFile();
-            String filePath = selectedFile.getAbsolutePath();
-            uploadFile(filePath);
+            File[] selectedFiles = jfc.getSelectedFiles();
+            uploadFile(selectedFiles);
         }
 
-        private void uploadFile(String filePath) {
+        private void uploadFile(File[] files) {
 
             Thread uploadThread = new Thread(() -> {
                 try {
-                    imageService.save(filePath);
-                    galleryFrame.updateImages();
+                    for (File file : files) {
+                        String filePath = file.getAbsolutePath();
+                        imageService.save(filePath);
+                        galleryFrame.updateImages();
+                    }
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(new JFrame(), "Image upload error. Try again", "Error",
                             JOptionPane.ERROR_MESSAGE);
