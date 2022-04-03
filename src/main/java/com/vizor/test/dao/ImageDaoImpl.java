@@ -122,7 +122,11 @@ public class ImageDaoImpl implements ImageDao {
     @Override
     public void save(InputStream inputStream, String imageName) throws IOException {
 
-        final Path path = Paths.get(SOURCE_DIRECTORY_PATH, imageName);
+        Path directoryPath = Paths.get(SOURCE_DIRECTORY_PATH);
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectory(directoryPath);
+        }
+        Path path = Paths.get(SOURCE_DIRECTORY_PATH, imageName);
         Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         inputStream.close();
     }
