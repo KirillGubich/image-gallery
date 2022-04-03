@@ -20,8 +20,9 @@ public class ImagePanel extends JPanel {
     private static final int HGAP = 10;
     private static final int VGAP = 10;
     private static final int IMAGE_BORDER_THICKNESS = 10;
-    private static final int MAX_IMAGE_WIDTH = 170;
-    private static final int MAX_IMAGE_HEIGHT = 130;
+    private static final int MAX_IMAGE_WIDTH = 150;
+    private static final int MAX_IMAGE_HEIGHT = 110;
+    private static final int IMAGE_HEIGHT_BUFFER = 30;
 
     private final int rowsCount;
     private final int columnsCount;
@@ -49,6 +50,8 @@ public class ImagePanel extends JPanel {
             final JLabel jLabel = new JLabel();
             jLabel.setBorder(imageBorder);
             jLabel.setHorizontalAlignment(JLabel.CENTER);
+            jLabel.setHorizontalTextPosition(JLabel.CENTER);
+            jLabel.setVerticalTextPosition(JLabel.BOTTOM);
             jLabel.addMouseListener(new ImageListener());
             imageLabels.add(jLabel);
         }
@@ -67,10 +70,12 @@ public class ImagePanel extends JPanel {
             imageIcon.setDescription(description);
             final JLabel imageLabel = imageLabels.get(i);
             imageLabel.setIcon(imageIcon);
+            imageLabel.setText(imageIcon.getDescription());
         }
         for (int i = imageIcons.size(); i < imageLabels.size(); i++) {
             final JLabel imageLabel = imageLabels.get(i);
             imageLabel.setIcon(null);
+            imageLabel.setText(null);
         }
     }
 
@@ -129,7 +134,7 @@ public class ImagePanel extends JPanel {
 
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setMinimumSize(new Dimension(width, height));
+            frame.setMinimumSize(new Dimension(width, height + IMAGE_HEIGHT_BUFFER));
             frame.setLocationRelativeTo(null);
             frame.setResizable(false);
             return frame;
