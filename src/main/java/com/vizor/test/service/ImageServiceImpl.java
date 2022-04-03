@@ -46,6 +46,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void deleteByName(String name) {
+
+        imageDao.delete(name);
+    }
+
+    @Override
     public void save(String imagePath) throws IOException {
 
         final File file = new File(imagePath);

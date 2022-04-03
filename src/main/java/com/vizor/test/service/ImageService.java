@@ -54,4 +54,11 @@ public interface ImageService {
      * @throws IOException if file not exist
      */
     void save(String imagePath) throws IOException;
+
+    /**
+     * Deletes image by given name
+     *
+     * @param name image name
+     */
+    void deleteByName(String name);
 }
