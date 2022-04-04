@@ -27,6 +27,9 @@ public class ButtonsPanel extends JPanel {
     private static final int BUTTON_BORDER_THICKNESS = 4;
     private static final String UPLOAD_ICON_PATH = "src/main/resources/icons/uploadIcon.png";
     private static final String DELETE_ICON_PATH = "src/main/resources/icons/bin.png";
+    private static final String UPLOAD_ERROR_MESSAGE = "Image upload error. Try again";
+    private static final String UPLOAD_ERROR_TITLE = "Error";
+    private static final String DIALOG_TITLE = "Select images";
 
     private final JButton uploadButton;
     private final JButton deleteButton;
@@ -77,7 +80,7 @@ public class ButtonsPanel extends JPanel {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setMultiSelectionEnabled(true);
             jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            jfc.setDialogTitle("Select images");
+            jfc.setDialogTitle(DIALOG_TITLE);
             jfc.setAcceptAllFileFilterUsed(false);
             FileNameExtensionFilter filter = new FileNameExtensionFilter("images", "png", "jpg");
             jfc.addChoosableFileFilter(filter);
@@ -99,7 +102,7 @@ public class ButtonsPanel extends JPanel {
                     }
                     galleryFrame.updateImages();
                 } catch (IOException ioException) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Image upload error. Try again", "Error",
+                    JOptionPane.showMessageDialog(new JFrame(), UPLOAD_ERROR_MESSAGE, UPLOAD_ERROR_TITLE,
                             JOptionPane.ERROR_MESSAGE);
                 }
             });

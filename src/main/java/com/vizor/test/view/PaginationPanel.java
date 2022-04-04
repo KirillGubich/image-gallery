@@ -22,7 +22,7 @@ public class PaginationPanel extends JPanel {
     private final GalleryFrame galleryFrame;
     private int page = 1;
 
-    public PaginationPanel(GalleryFrame galleryFrame, Color backgroundColor) {
+    public PaginationPanel(Color backgroundColor, GalleryFrame galleryFrame) {
 
         this.galleryFrame = galleryFrame;
         previousPageButton = new JButton();
