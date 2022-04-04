@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class ImageDaoImpl implements ImageDao {
 
-    private static final String SOURCE_DIRECTORY_PATH = "src/main/resources/assets";
+    private static final String SOURCE_DIRECTORY_PATH = "assets";
     private static ImageDaoImpl instance;
 
     private final File sourceDirectory;
